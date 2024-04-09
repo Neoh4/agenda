@@ -1,0 +1,22 @@
+{# templates/default/login.html.twig #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda</title>
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
+</head>
+<body>
+    <div class="main">
+        <div class="cadrant">
+            <form action="{{ path('login_check') }}" method="post">
+                <label for="chk" aria-hidden="true">Connexion</label>
+                <input type="text" name="username" placeholder="Nom" required="">
+                <input type="password" name="password" placeholder="Mot De Passe" required="">
+                <button type="submit">Connexion</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

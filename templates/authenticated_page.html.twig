@@ -1,0 +1,94 @@
+{# templates/authenticated_page.html.twig #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda</title>
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <script> 
+    var popupWindow;
+    function openPopupAdd() {
+        if (popupWindow && !popupWindow.closed) {
+                popupWindow.close();
+            }
+    popupWindow = window.open("", "Add Homework", "width=500,height=450");
+    var formHTML = `
+        <link rel="stylesheet" href="{{ asset('style.css') }}">
+        <form id="addHomeworkForm" class="cadrant"> 
+            <label class="label1" for="name">Titre devoir:</label><br>
+            <input class="input1" type="text" id="name" name="name"><br>
+            <label class="label1" for="description">Description devoir:</label><br>
+            <input class="input1" type="text" id="description" name="description"><br>
+            <label class="label1" for="datelimite">Date limite:</label><br>
+            <input class="input1" type="date" id="datelimite" name="datelimite"><br>
+            <input type="hidden" id="userId" name="id" value="{{ app.session.get('user_name') }}">
+            <button type="submit">Sauvegarder</button>
+        </form>
+    `;
+
+    popupWindow.document.write(formHTML);
+
+    popupWindow.document.getElementById("addHomeworkForm").onsubmit = function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        var formData = {
+            name: popupWindow.document.getElementById("name").value,
+            description: popupWindow.document.getElementById("description").value,
+            datelimite: popupWindow.document.getElementById("datelimite").value,
+            // Retrieve user ID from hidden input field
+            id: popupWindow.document.getElementById("userId").value
+        };
+
+        popupWindow.close();
+
+        fetch('/add-homework', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            console.log('Homework added successfully.');
+        })
+        .catch(error => {
+            console.error('Error adding homework:', error);
+        });
+    };
+    }
+    </script>
+    <script>
+        function openPopupDel(idProf) {
+            if (popupWindow && !popupWindow.closed) {
+                popupWindow.close();
+            }
+            var popupUrl = "{{ path('popup_content') }}";
+            popupWindow = window.open(popupUrl, "Homework Popup", "width=600,height=500");
+        }
+    </script>
+</head>
+<body>
+    <div class="applicationmain">
+        <div class="user">
+            <label for="chk" aria-hidden="true">Bienvenue, {{ app.session.get('user_name') }}</label>
+            {% if app.session.get('user_status') == "p" %}
+            <button type="button" onclick="openPopupAdd()">Ajouter Devoir</button>
+            <button type="button" onclick="openPopupDel()">Supprimer/Modifier Devoir</button>
+            {% endif %}
+        </div>
+        <div class="agenda">
+            {% for homework in homeworks %}
+            <div class="homework">
+                <div>
+                    <h1>{{ homework.name }}</h1>
+                    <h1>{{ homework.idProf }}</h1>
+                </div>
+                <p>{{ homework.description }}</p>
+                <p2>{{ homework.datelimite|date('Y-m-d') }}</p2>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

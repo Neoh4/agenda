@@ -1,0 +1,27 @@
+{# templates/edithomework/edit.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Devoir{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <div class="agenda">
+    <form action="{{ path('update_homework', {'id': homework.id}) }}" method="post">
+        <div>
+            <label for="name">Titre:</label>
+            <input type="text" id="name" name="name" value="{{ homework.name }}">
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <input id="description" name="description" value="{{ homework.description }}">
+        </div>
+        <div>
+            <label for="datelimite">Date Limite:</label>
+            <input type="date" id="datelimite" name="datelimite" value="{{ homework.datelimite|date('Y-m-d') }}"></input>
+        </div>
+        <button type="submit">Sauvegarder</button>
+        <a href="{{ path('popup_content') }}"><button>Annuler</button></a>
+    </form>
+    </div>
+{% endblock %}

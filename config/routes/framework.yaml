@@ -1,0 +1,12 @@
+when@dev:
+    _errors:
+        resource: '@FrameworkBundle/Resources/config/routing/errors.xml'
+        prefix: /_error
+        
+login:
+    path: /login
+    controller: App\Controller\LoginController::login
+
+authenticated_page:
+    path: /authenticated-page
+    controller: App\Controller\LoginController::authenticatedPage

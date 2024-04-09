@@ -1,0 +1,19 @@
+{# templates/popup/content.html.twig #}
+
+<link rel="stylesheet" href="{{ asset('style.css') }}">
+<div class="agenda">
+    {% for homework in homeworks %}
+        {% if homework.idProf == app.session.get('user_name') %}
+            <div class="homework">
+                <div>
+                    <h1>{{ homework.name }}</h1>
+                    <h1>{{ homework.idProf }}</h1>
+                </div>
+                <p>{{ homework.description }}</p>
+                <p2>{{ homework.datelimite|date('Y-m-d') }}</p2>
+                <a href="{{ path('edit_homework', { 'id': homework.id }) }}"><button >Modifier</button></a>
+                <a href="{{ path('delete_homework', { 'id': homework.id }) }}"><button >Supprimer</button></a>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

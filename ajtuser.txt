@@ -1,0 +1,5 @@
+INSERT INTO users (name, password, status) VALUES
+('John Doe', 'password1', 'e'),
+('Alice Smith', 'password2', 'e'),
+('Emily Brown', 'password3', 'p'),
+('Michael Johnson', 'password4', 'p');

@@ -1,0 +1,14 @@
+{# templates/admin/dashboard.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda</title>
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
+</head>
+<div class="applicationmain">
+        <a href="{{ path('admin_dashboard') }}"><button type="button">Retour à la séléction</button></a>
+</div>
+{% endblock %}

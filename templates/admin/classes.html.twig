@@ -1,0 +1,150 @@
+{# templates/admin/dashboard.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda</title>
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <script>
+    var popupWindow;
+
+    function openPopupAdd() {
+
+        if (popupWindow && !popupWindow.closed) {
+                popupWindow.close();
+        }
+
+        popupWindow = window.open("", "Add", "width=500,height=450");
+        
+        var formHTML = `
+            <link rel="stylesheet" href="{{ asset('style.css') }}">
+            <div class="main">
+            <form id="addTeacherForm">
+                <label for="name">Nom:</label><br>
+                <input class="input1" type="text" id="name" name="name"><br>
+                <button class="button1" type="submit">Ajouter Classe</button>
+            </form>
+            </div>
+        `;
+
+        popupWindow.document.write(formHTML);
+
+        popupWindow.document.getElementById("addTeacherForm").onsubmit = function(event) {
+            event.preventDefault();
+
+            var formData = {
+                name: popupWindow.document.getElementById("name").value
+            };
+
+            fetch('/add-classe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                console.log('Teacher added successfully.');
+                window.location = "{{ path('manage_classes') }}";
+                popupWindow.close();
+            })
+            .catch(error => {
+                console.error('Error adding teacher:', error);
+            });
+        };
+    }
+    </script>
+    <script>
+    function openPopupEdit(userId) {
+        
+        if (popupWindow && !popupWindow.closed) {
+                popupWindow.close();
+        }
+        popupWindow = window.open("", "Edit User", "width=500,height=450");
+
+        fetch('/get-teacher/' + userId)
+            .then(response => response.json())
+            .then(userData => {
+                popupWindow.document.write(`
+                    <link rel="stylesheet" href="{{ asset('style.css') }}">
+                    <div class="main">
+                    <form id="editUserForm">
+                        <label for="name">Nom:</label><br>
+                        <input class="input1" type="text" id="name" name="name" value="${userData.name}"><br>
+                        <label for="password">Mot de passe:</label><br>
+                        <input class="input1" type="password" id="password" name="password" value="${userData.password}"><br>
+                        <button type="submit">Enregistrer</button>
+                    </form>
+                    <div class="main">
+                `);
+
+                popupWindow.document.getElementById("editUserForm").onsubmit = function(event) {
+                    event.preventDefault();
+
+                    var formData = {
+                        name: popupWindow.document.getElementById("name").value,
+                        password: popupWindow.document.getElementById("password").value
+                    };
+
+
+                    fetch('/edit-teacher/' + userId, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                    .then(response => {
+                        console.log('User updated successfully.');
+                        window.location = "{{ path('manage_teachers') }}";
+                        popupWindow.close();
+                    })
+                    .catch(error => {
+                        console.error('Error updating user:', error);
+                    });
+                };
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+            });
+    }
+</script>
+<script>
+    function deleteClasse(classId) {
+        fetch(`/delete-classe/${classId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('User deleted successfully.');
+                window.location = "{{ path('manage_classes') }}";
+            } else {
+                console.error('Failed to delete classe.');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting classe:', error);
+        });
+    }
+</script>
+
+</head>
+<div class="applicationmain">
+        <a href="{{ path('admin_dashboard') }}"><button type="button">Retour à la séléction</button></a>
+        <a onclick="openPopupAdd()"><button type="button">Ajouter Classe</button></a>
+        <div class="listmanagement">
+        {% for classe in classes %}
+            <div class="listcontainer">
+                <div class="username">
+                        <label class="label1">{{ classe.nom }}</label>
+                </div>
+                <div class="deletebutton">
+                <a href="#" onclick="deleteClasse({{ classe.id }})"><button type="button">Supprimer {{ classe.nom }}</button></a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+</div>
+{% endblock %}

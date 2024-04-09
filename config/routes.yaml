@@ -1,0 +1,78 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+app_homepage:
+    path: /
+    controller: App\Controller\DefaultController::index
+add_homework:
+    path: /add-homework
+    controller: App\Controller\HomeworkController::addHomework
+    methods: [POST]
+login_check:
+    path: /login
+    controller: App\Controller\LoginController::login
+edit_homework:
+    path: '/edit_homework/{id}'
+    controller: App\Controller\EdithomeworkController::edit
+popup_content:
+    path: '/popup-content'
+    controller: App\Controller\PopupController::popupContent
+
+manage_students:
+    path: '/student'
+    controller: App\Controller\AdminController::studentContent
+manage_teachers:
+    path: '/profs'
+    controller: App\Controller\AdminController::teachersContent
+manage_classes:
+    path: '/classes'
+    controller: App\Controller\AdminController::classesContent
+
+get_teacher:
+    path: '/get-teacher/{id}'
+    controller: 'App\Controller\AdminController::getTeacher'
+    methods: ['GET']
+
+edit_teacher:
+    path: '/edit-teacher/{id}'
+    controller: 'App\Controller\AdminController::editTeacher'
+    methods: ['POST']
+
+delete_user:
+    path: '/delete-user/{id}'
+    controller: 'App\Controller\AdminController::deleteUser'
+    methods: ['DELETE']
+delete_classe:
+    path: '/delete-classe/{id}'
+    controller: 'App\Controller\AdminController::deleteClasse'
+    methods: ['DELETE']
+
+update_homework:
+    path: /homework/update/{id}
+    controller: 'App\Controller\EdithomeworkController::update'
+delete_homework:
+    path: /homework/delete/{id}
+    controller: 'App\Controller\EdithomeworkController::delete'
+admin_dashboard:
+    path: /admin/dashboard
+    controller: App\Controller\AdminController::dashboard
+
+add_user:
+    path: /add-user
+    controller: App\Controller\AdminController::addUser
+    methods: [POST]
+add_class:
+    path: /add-classe
+    controller: App\Controller\AdminController::addClasse
+    methods: [POST]
+
+add_student:
+    path: /add-student
+    controller: App\Controller\AdminController::addStudent
+    methods: [POST]
+add_teachers:
+    path: /add-teacher
+    controller: App\Controller\AdminController::addTeacher
+    methods: [POST]

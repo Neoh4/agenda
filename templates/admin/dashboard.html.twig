@@ -1,0 +1,16 @@
+{# templates/admin/dashboard.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda</title>
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
+</head>
+<div class="main">
+    <a href="{{ path('manage_students') }}"><button type="button">Gérer Élèves</button></a>
+    <a href="{{ path('manage_teachers') }}"><button type="button">Gérer Profs</button></a>
+    <a href="{{ path('manage_classes') }}"><button type="button">Gérer Classes</button></a>
+</div>
+{% endblock %}
